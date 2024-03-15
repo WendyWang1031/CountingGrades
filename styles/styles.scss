@@ -27,6 +27,47 @@ body {
   color: rgb(104, 104, 104);
   font-family: "Baloo 2", cursive;
 
+  section.animation-wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+
+    section.animation {
+      margin-top: 10vh;
+      height: 80vh;
+      // border: 5px solid red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .hero {
+        // border: 5px solid green;
+        width: 100%;
+        height: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+    .slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(
+        to right,
+        rgb(144, 144, 144),
+        rgb(91, 91, 91)
+      );
+      z-index: -1;
+    }
+  }
+
   main {
     section.main-part {
       padding: 1rem;
@@ -36,10 +77,12 @@ body {
       align-items: center;
       h1 {
         font-size: 3rem;
+        padding: 1.5rem 1.5rem;
       }
       p {
         font-size: 1.15rem;
       }
+
       div.all-inputs {
         width: 70%;
         form {
@@ -95,6 +138,29 @@ body {
         }
       }
     }
+  }
+}
+
+.remove {
+  transform: scale(0);
+  transition: all 0.5s ease;
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleDown {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
   }
 }
 

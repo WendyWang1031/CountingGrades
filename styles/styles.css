@@ -27,6 +27,38 @@ body {
   color: rgb(104, 104, 104);
   font-family: "Baloo 2", cursive;
 }
+body section.animation-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+}
+body section.animation-wrapper section.animation {
+  margin-top: 10vh;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body section.animation-wrapper section.animation .hero {
+  width: 100%;
+  height: 0;
+}
+body section.animation-wrapper section.animation .hero img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+body section.animation-wrapper .slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to right, rgb(144, 144, 144), rgb(91, 91, 91));
+  z-index: -1;
+}
 body main section.main-part {
   padding: 1rem;
   display: flex;
@@ -36,6 +68,7 @@ body main section.main-part {
 }
 body main section.main-part h1 {
   font-size: 3rem;
+  padding: 1.5rem 1.5rem;
 }
 body main section.main-part p {
   font-size: 1.15rem;
@@ -93,6 +126,27 @@ body main section.main-part div.result h2#result-gpa {
   font-weight: bold;
 }
 
+.remove {
+  transform: scale(0);
+  transition: all 0.5s ease;
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes scaleDown {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
 @keyframes border_color {
   0% {
     border-color: rgb(255, 255, 255);
