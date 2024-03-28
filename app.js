@@ -26,6 +26,7 @@ time_line
   )
   .fromTo(animation, 0.3, { opacity: 1 }, { opacity: 0 });
 
+//用戶無法透過鼠標與該元素互動
 setTimeout(() => {
   animation.style.pointerEvents = "none";
 }, 2500);
@@ -37,15 +38,17 @@ window.addEventListener("keypress", (e) => {
   }
 });
 
-//防止FORM內部的BUTTON交出表單
 let allButtons = document.querySelectorAll("button");
+let allSelects = document.querySelectorAll("select");
+let credits = document.querySelectorAll(".class-credit");
+
+//防止FORM內部的BUTTON按下後交出表單
 allButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
     e.preventDefault();
   });
 });
 
-let allSelects = document.querySelectorAll("select");
 allSelects.forEach((select) => {
   select.addEventListener("change", (e) => {
     changeColor(e.target);
@@ -53,38 +56,35 @@ allSelects.forEach((select) => {
   });
 });
 
-let credits = document.querySelectorAll(".class-credit");
 credits.forEach((credit) => {
   credit.addEventListener("change", () => {
     setGPA();
   });
 });
 
+//分數轉換相對應顏色
 function changeColor(target) {
+  target.style.color = "black";
   if (target.value == "A" || target.value == "A-") {
     target.style.backgroundColor = "LightGreen";
-    target.style.color = "black";
   } else if (
     target.value == "B" ||
     target.value == "B-" ||
     target.value == "B+"
   ) {
     target.style.backgroundColor = "yellow";
-    target.style.color = "black";
   } else if (
     target.value == "C" ||
     target.value == "C-" ||
     target.value == "C+"
   ) {
     target.style.backgroundColor = "orange";
-    target.style.color = "black";
   } else if (
     target.value == "D" ||
     target.value == "D-" ||
     target.value == "D+"
   ) {
     target.style.backgroundColor = "red";
-    target.style.color = "black";
   } else if (target.value == "F") {
     target.style.backgroundColor = "grey";
     target.style.color = "white";
@@ -93,6 +93,7 @@ function changeColor(target) {
   }
 }
 
+//分數轉換
 function convertor(grade) {
   switch (grade) {
     case "A":
@@ -124,10 +125,12 @@ function convertor(grade) {
   }
 }
 
+//計算分數方法
 function setGPA() {
   let formLength = document.querySelectorAll("form").length;
   let credits = document.querySelectorAll(".class-credit");
   let selects = document.querySelectorAll("select");
+  let result;
   let sum = 0;
   let creditSum = 0;
 
@@ -146,7 +149,7 @@ function setGPA() {
 
     console.log("sum is " + sum);
   }
-  let result;
+
   if (creditSum == 0) {
     result = (0.0).toFixed(2);
   } else {
@@ -155,6 +158,7 @@ function setGPA() {
   document.getElementById("result-gpa").innerText = result;
 }
 
+//新增按鈕按下：利用JS創造新節點
 let addButton = document.querySelector(".plus-btn");
 addButton.addEventListener("click", () => {
   let newForm = document.createElement("form");
@@ -165,16 +169,19 @@ addButton.addEventListener("click", () => {
   let newInput1 = document.createElement("input");
   newInput1.setAttribute("type", "text");
   newInput1.setAttribute("list", "opt");
+  newInput1.setAttribute("placeholder", "class category");
   newInput1.classList.add("class-type");
 
   let newInput2 = document.createElement("input");
   newInput2.setAttribute("type", "text");
+  newInput2.setAttribute("placeholder", "class number");
   newInput2.classList.add("class-number");
 
   let newInput3 = document.createElement("input");
   newInput3.setAttribute("type", "number");
   newInput3.setAttribute("min", "0");
   newInput3.setAttribute("max", "6");
+  newInput3.setAttribute("placeholder", "credits");
   newInput3.classList.add("class-credit");
   newInput3.addEventListener("change", () => {
     setGPA();
@@ -255,13 +262,14 @@ addButton.addEventListener("click", () => {
     changeColor(e.target);
   });
 
-  let newButton = document.createElement("button");
-  newButton.classList.add("trash-button");
   let newItag = document.createElement("i");
+  let newButton = document.createElement("button");
   newItag.classList.add("fas");
   newItag.classList.add("fa-trash");
+  newButton.classList.add("trash-button");
   newButton.appendChild(newItag);
 
+  //阻止按鈕的默認行為、確保按鈕執行底下定義操作
   newButton.addEventListener("click", (e) => {
     e.preventDefault();
     e.target.parentElement.parentElement.style.animation =
@@ -286,6 +294,7 @@ addButton.addEventListener("click", () => {
   newForm.style.animation = "scaleUp 0.5s ease forwards";
 });
 
+//點擊垃圾桶按鈕來移除整個祖父級元素，刪除過程為css設定的過渡效果
 let allTrash = document.querySelectorAll(".trash-button");
 allTrash.forEach((trash) => {
   trash.addEventListener("click", (e) => {
@@ -310,13 +319,14 @@ btn2.addEventListener("click", () => {
   handleSorting("ascending"); // 小到大
 });
 
+//處理排序法資料與條件
 function handleSorting(direction) {
   let graders = document.querySelectorAll("div.grader");
   let objectArray = [];
 
   for (let i = 0; i < graders.length; i++) {
-    let class_name = graders[i].children[0].value; // class category
-    let class_number = graders[i].children[1].value; // class number
+    let class_name = graders[i].children[0].value;
+    let class_number = graders[i].children[1].value;
     let class_credit = graders[i].children[2].value;
     let class_grade = graders[i].children[3].value;
 
@@ -338,12 +348,13 @@ function handleSorting(direction) {
     }
   }
 
-  // 取得object array後，我們可以把成績String換成數字
+  // 取得object array後，把成績String換成數字
   for (let i = 0; i < objectArray.length; i++) {
     objectArray[i].class_grade_number = convertor(objectArray[i].class_grade);
   }
 
   objectArray = mergeSort(objectArray);
+
   if (direction == "descending") {
     objectArray = objectArray.reverse();
   }
@@ -439,6 +450,7 @@ function handleSorting(direction) {
   });
 }
 
+//將遞迴拆開的陣列比較並且合併
 function merge(a1, a2) {
   let result = [];
   let i = 0;
@@ -466,6 +478,7 @@ function merge(a1, a2) {
   return result;
 }
 
+//合併排序法，本身即是個遞迴！
 function mergeSort(arr) {
   if (arr.length == 0) {
     return;
